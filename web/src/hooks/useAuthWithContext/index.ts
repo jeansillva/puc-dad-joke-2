@@ -3,5 +3,7 @@ import { useContext } from "react";
 
 export function useAuthWithContext() {
   // retorne os dados do contexto de autenticação utilizando o
-  // hook useContext
+  // hook useContext - Já foi feito
+  //--------------------------------------------
+  return useContext(AuthContext);
 }

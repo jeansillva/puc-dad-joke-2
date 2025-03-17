@@ -12,10 +12,11 @@ import Tooltip from "../Tooltip";
 
 import { getInitialsFrom } from "@src/utils";
 
-import { User } from "@src/services/AuthService";
+import { useAuthWithRedux } from "@src/hooks/useAuthwithRedux";
 
-export const Header = ({ user }: { user: User | null }) => {
+export const Header = () => {
   const navigate = useNavigate();
+  const { user } = useAuthWithRedux();
 
   return (
     <header className={styles.header}>

@@ -8,29 +8,24 @@ import { faSpinner } from "../../lib/fontawesome/solid";
 
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import { useAuthWithRedux } from "@src/hooks/useAuthwithRedux";
 
-import AuthService, { User } from "@src/services/AuthService";
-
-export function SignIn({ setUser }: { setUser: (user: User) => void }) {
+export function SignIn() {
   const [loading, setLoading] = useState(false);
 
+  const { signin } = useAuthWithRedux();
   const navigate = useNavigate();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
-      setLoading(true);
-      const formData = new FormData(event.currentTarget);
-
-      const user = {
-        email: formData.get("email") as string,
-        password: formData.get("password") as string,
-      };
-
-      const authenticatedUser = await AuthService.signin(user);
-
-      setUser(authenticatedUser);
+      await signin({ email, password }); 
       navigate("/");
     } catch {
       toast("Invalid email or password", { type: "error" });

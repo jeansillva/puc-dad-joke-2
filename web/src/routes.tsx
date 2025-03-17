@@ -1,16 +1,20 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router";
+import { useAuthWithRedux } from "./hooks/useAuthwithRedux";
 
-import { User } from "./services/AuthService";
+export function RequireAuth({ children }: { children: ReactNode }) {
+  const { user } = useAuthWithRedux();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-export function RequireAuth({
-  children,
-  user,
-}: {
-  children: ReactNode;
-  user: User | null;
-}) {
-  if (!user) {
+  useEffect(() => {
+    if (user) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [user]);
+
+  if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
